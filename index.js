@@ -213,7 +213,7 @@ function compare(val1, val2) {
     return val1 - val2;
   }
   if (val1 instanceof Date) {
-    var result = val1 - val2;
+    var result = val1 - (new Date(val2));
     return result;
   }
   // Return NaN if we don't know how to compare
