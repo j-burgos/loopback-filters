@@ -127,6 +127,18 @@ function test(example, value) {
 
     if (example.inq) {
       // if (!value) return false;
+
+      if (Array.isArray(value)) {
+        var found = value.some(function (v) {
+          return example.inq.indexOf(v) >= 0
+        });
+
+        if (found) {
+          return true;
+        }
+        return false;
+      }
+
       for (var i = 0; i < example.inq.length; i++) {
         if (example.inq[i] == value) {
           return true;
