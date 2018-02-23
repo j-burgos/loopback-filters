@@ -222,8 +222,9 @@ function compare(val1, val2) {
   if (typeof val1 === 'string') {
     const isDate = !isNaN(Date.parse(val1));
     if (isDate) {
-      console.log('stringDates!', val1, val2);
-      var result = val1 - (new Date(val2));
+      const oneDay = 86400 * 1000;
+      const delta = (new Date(val1)) - (new Date(val2));
+      const result = Math.abs(delta) <= oneDay ? 0 : delta < 0 ? -1 : 1;
       return result;
     }
     return (val1 > val2) ? 1 : ((val1 < val2) ? -1 : (val1 == val2) ? 0 : NaN);
