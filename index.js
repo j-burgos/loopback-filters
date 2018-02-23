@@ -211,6 +211,7 @@ function test(example, value) {
  * @private
  */
 function compare(val1, val2) {
+  
   if (val1 == null || val2 == null) {
     // Either val1 or val2 is null or undefined
     return val1 == val2 ? 0 : NaN;
@@ -219,7 +220,7 @@ function compare(val1, val2) {
     return val1 - val2;
   }
   if (typeof val1 === 'string') {
-    const isDate = isNaN(Date.parse(val1));
+    const isDate = !isNaN(Date.parse(val1));
     if (isDate) {
       console.log('stringDates!', val1, val2);
       var result = val1 - (new Date(val2));
