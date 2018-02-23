@@ -211,7 +211,6 @@ function test(example, value) {
  * @private
  */
 function compare(val1, val2) {
-  
   if (val1 == null || val2 == null) {
     // Either val1 or val2 is null or undefined
     return val1 == val2 ? 0 : NaN;
