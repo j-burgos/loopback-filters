@@ -5,6 +5,7 @@
 'use strict';
 var debug = require('debug')('loopback:filter');
 var geo = require('./lib/geo');
+const _get = require('lodash.get');
 
 module.exports = function filterNodes(nodes, filter) {
   if (filter) {
@@ -219,6 +220,13 @@ function compare(val1, val2) {
     return val1 - val2;
   }
   if (typeof val1 === 'string') {
+    const isDate = !isNaN(Date.parse(val1));
+    if (isDate) {
+      const oneDay = 86400 * 1000;
+      const delta = (new Date(val1)) - (new Date(val2));
+      const result = Math.abs(delta) <= oneDay ? 0 : delta < 0 ? -1 : 1;
+      return result;
+    }
     return (val1 > val2) ? 1 : ((val1 < val2) ? -1 : (val1 == val2) ? 0 : NaN);
   }
   if (typeof val1 === 'boolean') {
@@ -256,6 +264,12 @@ function getValue(obj, path) {
   var val = obj;
   for (var i = 0, n = keys.length; i < n; i++) {
     val = val[keys[i]];
+    const valueIsArray = Array.isArray(val);
+    if (valueIsArray) {
+      const nestedKeys = keys.slice(i + 1).join('.');
+      const nestedValue = val.map(v => getValue(v, nestedKeys));
+      return nestedValue;
+    }
     if (val == null) {
       return val;
     }
