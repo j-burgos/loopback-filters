@@ -257,20 +257,24 @@ function testInEquality(example, val) {
 }
 
 function getValue(obj, path) {
-  console.log('path', path);
-  return _get(obj, path);
-  // if (obj == null) {
-  //   return undefined;
-  // }
-  // var keys = path.split('.');
-  // var val = obj;
-  // for (var i = 0, n = keys.length; i < n; i++) {
-  //   val = val[keys[i]];
-  //   if (val == null) {
-  //     return val;
-  //   }
-  // }
-  // return val;
+  if (obj == null) {
+    return undefined;
+  }
+  var keys = path.split('.');
+  var val = obj;
+  for (var i = 0, n = keys.length; i < n; i++) {
+    val = val[keys[i]];
+    const valueIsArray = Array.isArray(val);
+    if (valueIsArray) {
+      const nestedKeys = keys.slice(i + 1).join('.');
+      const nestedValue = val.map(v => getValue(v, nestedKeys));
+      return nestedValue;
+    }
+    if (val == null) {
+      return val;
+    }
+  }
+  return val;
 }
 
 function selectFields(fields) {
