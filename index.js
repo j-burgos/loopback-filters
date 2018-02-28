@@ -5,6 +5,7 @@
 'use strict';
 var debug = require('debug')('loopback:filter');
 var geo = require('./lib/geo');
+const _get = require('lodash.get');
 
 module.exports = function filterNodes(nodes, filter) {
   if (filter) {
@@ -256,18 +257,20 @@ function testInEquality(example, val) {
 }
 
 function getValue(obj, path) {
-  if (obj == null) {
-    return undefined;
-  }
-  var keys = path.split('.');
-  var val = obj;
-  for (var i = 0, n = keys.length; i < n; i++) {
-    val = val[keys[i]];
-    if (val == null) {
-      return val;
-    }
-  }
-  return val;
+  console.log('path', path);
+  return _get(obj, path);
+  // if (obj == null) {
+  //   return undefined;
+  // }
+  // var keys = path.split('.');
+  // var val = obj;
+  // for (var i = 0, n = keys.length; i < n; i++) {
+  //   val = val[keys[i]];
+  //   if (val == null) {
+  //     return val;
+  //   }
+  // }
+  // return val;
 }
 
 function selectFields(fields) {
