@@ -266,8 +266,10 @@ function getValue(obj, path) {
     val = val[keys[i]];
     const valueIsArray = Array.isArray(val);
     if (valueIsArray) {
-      const nestedKeys = keys.slice(i + 1).join('.');
-      const nestedValue = val.map(v => getValue(v, nestedKeys));
+      const nestedKeys = keys.slice(i + 1);
+      if (!nestedKeys.length) return val;
+      const nestedKey = nestedKeys.join('.');
+      const nestedValue = val.map(v => getValue(v, nestedKey));
       return nestedValue;
     }
     if (val == null) {
